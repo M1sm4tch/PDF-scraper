@@ -1,61 +1,89 @@
-import PyPDF2
-import re
-from datetime import datetime
+import tabula
+import sqlite3
+import logging
+import pandas as pd
 
+# Configure the logging settings
+logging.basicConfig(filename='app_log.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def extract_information(pdf_path):
-    with open(pdf_path, 'rb') as file:
-        pdf_reader = PyPDF2.PdfReader(file)
-        num_pages = len(pdf_reader.pages)
+def read_pdf(file_path):
+    """Read PDF and extract tables using tabula."""
+    try:
+        tables = tabula.read_pdf(file_path, pages='all')
+        return [table.dropna(how='all') for table in tables if table is not None]
+    except Exception as e:
+        logging.error(f"Error reading PDF: {e}")
+        return []
 
-        transaction_data = []
+def validate_date_format(date_str):
+    """Validate the date format."""
+    try:
+        pd.to_datetime(date_str, format='%d/%m/%Y', errors='raise')
+        return True
+    except ValueError as e:
+        logging.error(f"Invalid date format: {date_str}, Error: {e}")
+        return False
 
-        for page_num in range(num_pages):
-            page = pdf_reader.pages[page_num]
-            text = page.extract_text()
+def validate_data(row):
+    """Validate the data before insertion."""
+    if not validate_date_format(str(row[0])):
+        return False
 
-            # Process text line by line
-            lines = text.split('\n')
+    return True
 
-            # Define pattern for extracting relevant information
-            record_pattern = r'(\d{2}/\d{2}/\d{4})\s+(.*?)\s+(.*?)\s*(-?[\d,]+(?:\.\d{2})?)?\s*(-?[\d,]+(?:\.\d{2})?|0)\s*(-?[\d,]+(?:\.\d{2})?)'
+def create_table(cursor):
+    """Create the SQLite table if it doesn't exist."""
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS transactions (
+            reference_no INTEGER PRIMARY KEY,
+            date TEXT,
+            type TEXT,
+            details TEXT,
+            credit REAL,
+            debit REAL,
+            balance REAL
+        )
+    ''')
 
-            for line_num, line in enumerate(lines, start=1):
-                # Skip the header line
-                if line_num == 14:
-                    continue
+def insert_data(cursor, row):
+    """Insert validated data into the SQLite database."""
+    try:
+        cursor.execute('''
+            INSERT INTO transactions (date, type, details, credit, debit, balance)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (str(row[0]), str(row[1]), str(row[2]), row[3], row[4], row[5]))
+    except Exception as e:
+        logging.error(f"Error inserting validated row: {row}, Error: {e}")
 
-                # Extract information using regular expressions
-                records = re.findall(record_pattern, line)
+def process_pdf(file_path, db_file):
+    """Process the bank statement PDF and insert data into SQLite database."""
+    try:
+        # Read PDF and extract tables
+        tables = read_pdf(file_path)
 
-                if (len(records)>=1):
-                    print(records[-1])
+        # Connect to the SQLite database
+        conn = sqlite3.connect(db_file)
 
-                for date, payment_type, detail, credit, debit, balance in records:
-                    date_object = datetime.strptime(date, '%d/%m/%Y')
+        # Create a cursor object to execute SQL queries
+        cursor = conn.cursor()
 
-                    # Convert comma-separated numbers to float
-                    credit_amount = float(credit.replace(',', '')) if credit else None
-                    debit_amount = float(debit.replace(',', '')) if debit else None
-                    balance_amount = float(balance.replace(',', ''))
+        # Create the table if it doesn't exist
+        create_table(cursor)
 
-                    transaction_data.append({
-                        'date': date_object.strftime('%d/%m/%Y'),  # Format back to '01/01/2024'
-                        'payment_type': payment_type.strip(),
-                        'detail': detail.strip(),
-                        'credit': credit_amount if credit_amount is not None else None,
-                        'debit': debit_amount if credit_amount is None else None,  # Use debit when credit is None
-                        'balance': balance_amount,
-                    })
+        # Insert data into the table after validation
+        for df in tables:
+            for row in df.itertuples(index=False, name=None):
+                if validate_data(row):
+                    insert_data(cursor, row)
 
-    return transaction_data
+        # Commit the changes and close the connection
+        conn.commit()
+        conn.close()
 
-# Replace 'your_pdf_file.pdf' with the actual path to your PDF file
-pdf_path = 'statement.pdf'
-result = extract_information(pdf_path)
-print(type(result))
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
 
-# Print the extracted information
-for transaction in result:
-    print(type(transaction))
-    print(transaction)
+if __name__ == "__main__":
+    pdf_file_path = "statement.pdf"
+    database_file = "bank_transactions.db"
+    process_pdf(pdf_file_path, database_file)
