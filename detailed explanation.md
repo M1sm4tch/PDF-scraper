@@ -44,6 +44,3 @@ Copy code
 SELECT * FROM transactions;
 Ensure that the expected data has been inserted into the database.
 
-Adjust and Iterate:
-
-If there are issues or the script doesn't work as expected, review the logs, update the script accordingly, and iterate the testing process.
