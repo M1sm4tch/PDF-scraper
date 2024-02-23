@@ -1,0 +1,40 @@
+2024-02-23 23:18:22,553 - ERROR - Invalid date format: Date, Error: time data "Date" doesn't match format "%d/%m/%Y", at position 0. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+2024-02-23 23:18:22,587 - ERROR - Invalid date format: N ote:, Error: time data "N ote:" doesn't match format "%d/%m/%Y", at position 0. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+2024-02-23 23:18:22,587 - ERROR - Invalid date format: Issue Date: 02/02/2024, Error: time data "Issue Date: 02/02/2024" doesn't match format "%d/%m/%Y", at position 0. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+2024-02-23 23:18:22,587 - ERROR - Invalid date format: Period: 01/01/2024 to 31/01/2024, Error: time data "Period: 01/01/2024 to 31/01/2024" doesn't match format "%d/%m/%Y", at position 0. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+2024-02-23 23:18:22,587 - ERROR - Invalid date format: 111-234-567-890, Error: time data "111-234-567-890" doesn't match format "%d/%m/%Y", at position 0. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+2024-02-23 23:18:22,587 - ERROR - Invalid date format: Bit Manufacturing Ltd, Error: time data "Bit Manufacturing Ltd" doesn't match format "%d/%m/%Y", at position 0. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+2024-02-23 23:18:22,587 - ERROR - Invalid date format: 2450 Courage St, STE 108, Error: time data "2450 Courage St, STE 108" doesn't match format "%d/%m/%Y", at position 0. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+2024-02-23 23:18:22,587 - ERROR - Invalid date format: Brownsville, TX 78521, Error: time data "Brownsville, TX 78521" doesn't match format "%d/%m/%Y", at position 0. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+2024-02-23 23:18:22,587 - ERROR - Invalid date format: Account Activity, Error: time data "Account Activity" doesn't match format "%d/%m/%Y", at position 0. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
+2024-02-23 23:18:22,587 - ERROR - Invalid date format: Date Payment Type, Error: time data "Date Payment Type" doesn't match format "%d/%m/%Y", at position 0. You might want to try:
+    - passing `format` if your strings have a consistent format;
+    - passing `format='ISO8601'` if your strings are all ISO8601 but not necessarily in exactly the same format;
+    - passing `format='mixed'`, and the format will be inferred for each element individually. You might want to use `dayfirst` alongside this.
